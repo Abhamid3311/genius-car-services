@@ -1,14 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
+    const [agree, setAgree] = useState(false);
     const emailRef = useRef('');
     const passwordRef = useRef('');
     const nameRef = useRef('');
+    const checkRef = useRef(false);
     const navigate = useNavigate();
+
     const [
         createUserWithEmailAndPassword,
         user,
@@ -22,8 +26,11 @@ const Register = () => {
         const email = emailRef.current.value;
         const name = nameRef.current.value;
         const password = passwordRef.current.value;
-
-        createUserWithEmailAndPassword(name, email, password);
+        //  const agree = checkRef.current.checked;
+        if (agree) {
+            createUserWithEmailAndPassword(name, email, password);
+            navigate('/home');
+        }
     }
 
     const navigateLogin = () => {
@@ -55,13 +62,18 @@ const Register = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
+                    <Form.Check onClick={() => setAgree(!agree)} ref={checkRef} type="checkbox" className={agree ? 'text-primary' : 'text-danger'} label="Accept our terms and condition" />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button
+                    disabled={!agree}
+                    className='w-50 mx-auto d-block'
+                    variant="primary"
+                    type="submit">
                     Register
                 </Button>
             </Form>
             <p>Already have an account? <span className='text-danger' onClick={navigateLogin}>Please login</span></p>
+            <SocialLogin></SocialLogin>
         </div>
     );
 };
