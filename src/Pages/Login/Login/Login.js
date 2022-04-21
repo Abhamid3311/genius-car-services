@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import PageTitel from '../../../Shared/PageTitel/PageTitel';
 
 
 const Login = () => {
@@ -34,6 +35,7 @@ const Login = () => {
     }
     return (
         <div className='container w-50 mx-auto mt-5'>
+            <PageTitel title="Login"></PageTitel>
             <h2 className='text-primary text-center'> Login</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
